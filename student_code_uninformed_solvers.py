@@ -64,6 +64,7 @@ class SolverBFS(UninformedSolver):
         movables = self.gm.getMovables()
         visited = self.visited
         if self.currentState.state == self.victoryCondition:  # check to make sure we're not already at victory state
+
             if (self.q != self.q.empty()):
                 while not self.q.empty():
                     self.q.get()
@@ -82,7 +83,9 @@ class SolverBFS(UninformedSolver):
                 self.q.put(i)
 
         while not self.q.empty():
+
             child = self.q.get()
+
             if child not in visited:
                 curr = self.currentState
                 base = []
