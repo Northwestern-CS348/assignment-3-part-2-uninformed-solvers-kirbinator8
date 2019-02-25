@@ -62,6 +62,7 @@ class SolverBFS(UninformedSolver):
             True if the desired solution state is reached, False otherwise
         """
         movables = self.gm.getMovables()
+        visited = self.visited
         if self.currentState.state == self.victoryCondition:  # check to make sure we're not already at victory state
             if (self.q != self.q.empty()):
                 while not self.q.empty():
@@ -77,12 +78,12 @@ class SolverBFS(UninformedSolver):
                 self.gm.reverseMove(i)
 
         for i in self.currentState.children:
-            if i not in self.visited:
+            if i not in visited:
                 self.q.put(i)
 
         while not self.q.empty():
             child = self.q.get()
-            if child not in self.visited:
+            if child not in visited:
                 curr = self.currentState
                 base = []
 
@@ -97,13 +98,13 @@ class SolverBFS(UninformedSolver):
                     curr = curr.parent
                 branch = reversed(branch)
 
-                for s in base:
-                    self.gm.reverseMove(s)
+                for k in base:
+                    self.gm.reverseMove(k)
 
-                for s in branch:
-                    self.gm.makeMove(s)
+                for j in branch:
+                    self.gm.makeMove(j)
 
-                self.visited[child] = True
+                visited[child] = True
                 self.currentState = child
                 self.move_counter = self.move_counter + 1
                 self.currentState.depth = self.move_counter
