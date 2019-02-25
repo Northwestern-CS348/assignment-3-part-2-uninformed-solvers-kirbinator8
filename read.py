@@ -1,6 +1,7 @@
 from logical_classes import *
 import os.path
 
+
 def getForbiddensFactStrings(filenameOrAbsoluteFilePath):
     ret = []
     if '\\' in filenameOrAbsoluteFilePath or '/' in filenameOrAbsoluteFilePath:
@@ -16,6 +17,8 @@ def getForbiddensFactStrings(filenameOrAbsoluteFilePath):
 
 # read_tokenize takes the name of a file, reads it in and tokenizes the
 # statements and rules in that file.
+
+
 def read_tokenize(file):
     """Reads in a file and processes contents into lists of facts and rules.
 
@@ -66,24 +69,25 @@ def parse_input(e):
         (number, string | listof string): label, then parsed input
     """
     if len(e) == 0:
-        #return (BLANK, None)
+        # return (BLANK, None)
         return None
     elif e[0] == '#':
-        #return (COMMENT, e)
+        # return (COMMENT, e)
         return e[1:]
     elif e[0:5] == "fact:":
         e = e[5:].replace(")", "").replace("(", "").rstrip().strip().split()
-        #return (FACT, e)
+        # return (FACT, e)
         return Fact(e)
     elif e[0:5] == "rule:":
         e = e[5:].split("->")
         rhs = e[1].replace(")", "").replace("(", "").rstrip().strip().split()
         lhs = e[0].rstrip(") ").strip("( ").replace("(", "").split(")")
         lhs = map(lambda x: x.rstrip().strip().split(), lhs)
-        #return (RULE, [lhs, rhs])
+        # return (RULE, [lhs, rhs])
         return Rule([lhs, rhs])
     else:
         print("PARSE ERROR: input header", e[0:5], "not recognized.")
+
 
 def get_new_fact_or_rule():
     """Creates a new fact or rule. (instead of args, we use command line input
@@ -95,6 +99,7 @@ def get_new_fact_or_rule():
     msg = "Please type in a new fact or rule you want to add to the KB:\n"
     e = read_from_input(msg)
     return parse_input(e)
+
 
 def get_new_statements():
     """Gets statements from user via the command line.  Statments are expected
@@ -109,5 +114,5 @@ def get_new_statements():
         list: statement filtered for strings of the form `pred x1 x2 ... :`
     """
     e = read_from_input("Please type in a statement of the form " +
-            "\"pred x1 x2 ...\":\n")
+                        "\"pred x1 x2 ...\":\n")
     return e.split()

@@ -1,4 +1,5 @@
-import unittest, inspect
+import unittest
+import inspect
 from multiprocessing.pool import ThreadPool
 from multiprocessing.context import TimeoutError
 from student_code_game_masters import *
@@ -63,7 +64,7 @@ class KBTest(unittest.TestCase):
              timeout: time out in seconds. Default 5 seconds
         """
         try:
-            self.pool.apply_async(self.solve, [solver,]).get(timeout)
+            self.pool.apply_async(self.solve, [solver, ]).get(timeout)
             self.assertTrue(solver.gm.isWon())
         except TimeoutError:
             raise Exception("Timed out: %s" % inspect.stack()[1][3])
@@ -79,11 +80,11 @@ class KBTest(unittest.TestCase):
         self.assertFalse(th.isWon())
 
         movables = th.getMovables()
-        self.assertEqual(th.getGameState(), ((1,2,3),(),()))
+        self.assertEqual(th.getGameState(), ((1, 2, 3), (), ()))
         th.makeMove(movables[0])
-        self.assertEqual(th.getGameState(), ((2,3),(1,),()))
+        self.assertEqual(th.getGameState(), ((2, 3), (1,), ()))
         th.reverseMove(movables[0])
-        self.assertEqual(th.getGameState(), ((1,2,3),(),()))
+        self.assertEqual(th.getGameState(), ((1, 2, 3), (), ()))
 
     def test02_DFS_Hanoi(self):
         th = TowerOfHanoiGame()
@@ -95,7 +96,7 @@ class KBTest(unittest.TestCase):
         th.setWinningCondition(required, 'hanoi_all_forbidden.txt')
         self.assertFalse(th.isWon())
 
-        solver = SolverDFS(th,((),(),(1,2,3)))
+        solver = SolverDFS(th, ((), (), (1, 2, 3)))
 
         self.runPlayXSteps(solver, [
             # [step, expected game state]
@@ -114,7 +115,7 @@ class KBTest(unittest.TestCase):
         th.setWinningCondition(required, 'hanoi_all_forbidden.txt')
         self.assertFalse(th.isWon())
 
-        solver = SolverDFS(th, ((),(),(1,2,3)))
+        solver = SolverDFS(th, ((), (), (1, 2, 3)))
         self.runSolve(solver)
 
     def test04_BFS_Hanoi(self):
@@ -127,7 +128,7 @@ class KBTest(unittest.TestCase):
         th.setWinningCondition(required, 'hanoi_all_forbidden.txt')
         self.assertFalse(th.isWon())
 
-        solver = SolverBFS(th,((),(),(1,2,3)))
+        solver = SolverBFS(th, ((), (), (1, 2, 3)))
 
         self.runPlayXSteps(solver, [
             # [step, expected game state]
@@ -146,7 +147,7 @@ class KBTest(unittest.TestCase):
         th.setWinningCondition(required, 'hanoi_all_forbidden.txt')
         self.assertFalse(th.isWon())
 
-        solver = SolverBFS(th, ((),(),(1,2,3)))
+        solver = SolverBFS(th, ((), (), (1, 2, 3)))
         self.runSolve(solver,)
 
     def test06_GM_8Puzzle(self):
@@ -160,12 +161,11 @@ class KBTest(unittest.TestCase):
         self.assertFalse(p8.isWon())
 
         movables = p8.getMovables()
-        self.assertEqual(p8.getGameState(), ((5,4,-1),(6,1,8),(7,3,2)))
+        self.assertEqual(p8.getGameState(), ((5, 4, -1), (6, 1, 8), (7, 3, 2)))
         p8.makeMove(movables[0])
-        self.assertEqual(p8.getGameState(), ((5,-1,4), (6,1,8), (7,3,2)))
+        self.assertEqual(p8.getGameState(), ((5, -1, 4), (6, 1, 8), (7, 3, 2)))
         p8.reverseMove(movables[0])
-        self.assertEqual(p8.getGameState(), ((5,4,-1),(6,1,8),(7,3,2)))
-
+        self.assertEqual(p8.getGameState(), ((5, 4, -1), (6, 1, 8), (7, 3, 2)))
 
     def test07_DFS_8Puzzle(self):
         p8 = Puzzle8Game()
@@ -177,7 +177,7 @@ class KBTest(unittest.TestCase):
         p8.setWinningCondition(required, 'puzzle8_all_forbidden.txt')
         self.assertFalse(p8.isWon())
 
-        solver = SolverDFS(p8,((1,2,3),(4,5,6),(7,8,-1)))
+        solver = SolverDFS(p8, ((1, 2, 3), (4, 5, 6), (7, 8, -1)))
 
         self.runPlayXSteps(solver, [
             # [step, expected game state]
@@ -196,7 +196,7 @@ class KBTest(unittest.TestCase):
         p8.setWinningCondition(required, 'puzzle8_all_forbidden.txt')
         self.assertFalse(p8.isWon())
 
-        solver = SolverBFS(p8,((1,2,3),(4,5,6),(7,8,-1)))
+        solver = SolverBFS(p8, ((1, 2, 3), (4, 5, 6), (7, 8, -1)))
 
         self.runPlayXSteps(solver, [
             # [step, expected game state]

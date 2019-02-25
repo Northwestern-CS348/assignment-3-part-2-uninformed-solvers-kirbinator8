@@ -1,8 +1,10 @@
-import read, copy
+import read
+import copy
 from util import *
 from logical_classes import *
 
 verbose = 0
+
 
 class KnowledgeBase(object):
     def __init__(self, facts=[], rules=[]):
@@ -97,17 +99,18 @@ class KnowledgeBase(object):
             if fact_rule.supports_facts:
                 printv("Removing supported facts", 1, verbose)
                 for dependent in fact_rule.supports_facts:
-                    for fact,rule in dependent.supported_by:
+                    for fact, rule in dependent.supported_by:
                         if fact == fact_rule:
-                            dependent.supported_by.remove([fact,rule])
+                            dependent.supported_by.remove([fact, rule])
                     if len(dependent.supported_by) == 0 and not dependent.asserted:
                         self.kb_remove(dependent)
             if fact_rule.supports_rules:
-                if verbose > 1: print("Removing supported rules")
+                if verbose > 1:
+                    print("Removing supported rules")
                 for dependent in fact_rule.supports_rules:
-                    for fact,rule in dependent.supported_by:
+                    for fact, rule in dependent.supported_by:
                         if fact == fact_rule:
-                            dependent.supported_by.remove([fact,rule])
+                            dependent.supported_by.remove([fact, rule])
                     if len(dependent.supported_by) == 0 and not dependent.asserted:
                         self.kb_remove(dependent)
             self.facts.remove(fact_rule)
@@ -116,17 +119,17 @@ class KnowledgeBase(object):
             if fact_rule.supports_facts:
                 printv("Removing supported facts", 1, verbose)
                 for dependent in fact_rule.supports_facts:
-                    for fact,rule in dependent.supported_by:
+                    for fact, rule in dependent.supported_by:
                         if rule == fact_rule:
-                            dependent.supported_by.remove([fact,rule])
+                            dependent.supported_by.remove([fact, rule])
                     if len(dependent.supported_by) == 0 and not dependent.asserted:
                         self.kb_remove(dependent)
             if fact_rule.supports_rules:
                 printv("Removing supported rules", 1, verbose)
                 for dependent in fact_rule.supports_rules:
-                    for fact,rule in dependent.supported_by:
+                    for fact, rule in dependent.supported_by:
                         if rule == fact_rule:
-                            dependent.supported_by.remove([fact,rule])
+                            dependent.supported_by.remove([fact, rule])
                     if len(dependent.supported_by) == 0 and not dependent.asserted:
                         self.kb_remove(dependent)
             self.rules.remove(fact_rule)
@@ -175,6 +178,7 @@ class KnowledgeBase(object):
         else:
             print('Not a fact, not removed: %s' % (fact))
 
+
 class InferenceEngine(object):
     def fc_infer(self, fact, rule, kb):
         """Forward-chaining to infer new facts and rules
@@ -183,17 +187,17 @@ class InferenceEngine(object):
             rule (Rule) - A rule from the KnowledgeBase
             kb (KnowledgeBase) - A KnowledgeBase
         Returns:
-            Nothing            
+            Nothing
         """
         printv('Attempting to infer from {!r} and {!r} => {!r}', 1, verbose,
-            [fact.statement, rule.lhs, rule.rhs])
+               [fact.statement, rule.lhs, rule.rhs])
         statement1 = fact.statement
         statement2 = rule.lhs[0]
         bindings = match(statement1, statement2)
         if len(rule.lhs) == 1 and bindings:
-            new_fact = Fact(instantiate(rule.rhs, bindings), [[fact,rule]])
+            new_fact = Fact(instantiate(rule.rhs, bindings), [[fact, rule]])
             printv('Inferring {!r} from {!r} and {!r} => {!r}', 0, verbose,
-                [new_fact.statement, fact.statement, rule.lhs, rule.rhs])
+                   [new_fact.statement, fact.statement, rule.lhs, rule.rhs])
             kb.kb_add(new_fact)
             new_fact = kb._get_fact(new_fact)
             fact.supports_facts.append(new_fact)
@@ -203,9 +207,9 @@ class InferenceEngine(object):
             for statement in rule.lhs[1:]:
                 new_lhs.append(instantiate(statement, bindings))
             new_rhs = instantiate(rule.rhs, bindings)
-            new_rule = Rule([new_lhs, new_rhs], [[fact,rule]])
+            new_rule = Rule([new_lhs, new_rhs], [[fact, rule]])
             printv('Inferring {!r} => {!r} from {!r} and {!r} => {!r}', 0, verbose,
-                [new_rule.lhs, new_rule.rhs, fact.statement, rule.lhs, rule.rhs])
+                   [new_rule.lhs, new_rule.rhs, fact.statement, rule.lhs, rule.rhs])
             kb.kb_add(new_rule)
             new_rule = kb._get_rule(new_rule)
             fact.supports_rules.append(new_rule)

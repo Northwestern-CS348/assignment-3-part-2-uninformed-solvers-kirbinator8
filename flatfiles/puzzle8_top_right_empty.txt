@@ -1,6 +1,6 @@
 """
 For a game with 8 tiles of blocks on a 3x3 grid,
-write down the Facts and Rules to model the game state 
+write down the Facts and Rules to model the game state
 shown as the follows:
 
  y\\x   pos1     pos2     pos3
@@ -12,8 +12,31 @@ pos2 | tile6  | tile1  | tile8  |
 pos3 | tile7  | tile3  | tile2  |
      ----------------------------
 
-Example: 
+Example:
 fact: (pred obj1 obj2)
 rule: ((pred obj1 obj2) (pred obj2 obj3)) -> (pred obj1 obj3)
 
 """
+fact: (inst tile1 tile)
+fact: (inst tile2 tile)
+fact: (inst tile3 tile)
+fact: (inst tile4 tile)
+fact: (inst tile5 tile)
+fact: (inst tile6 tile)
+fact: (inst tile7 tile)
+fact: (inst tile8 tile)
+fact: (inst empty tile)
+fact: (loc tile5 pos1 pos1)
+fact: (loc tile4 pos2 pos1)
+fact: (loc empty pos3 pos1)
+fact: (loc tile6 pos1 pos2)
+fact: (loc tile1 pos2 pos2)
+fact: (loc tile8 pos3 pos2)
+fact: (loc tile7 pos1 pos3)
+fact: (loc tile3 pos2 pos3)
+fact: (loc tile2 pos3 pos3)
+rule: ((loc ?A ?a pos2) (loc ?B ?a ?z)) -> (adj ?A ?B)
+rule: ((loc ?A ?a ?z) (loc ?B ?a pos2)) -> (adj ?A ?B)
+rule: ((loc ?A pos2 ?b) (loc ?B ?z ?b)) -> (adj ?A ?B)
+rule: ((loc ?A ?z ?b) (loc ?B pos2 ?b)) -> (adj ?A ?B)
+rule: ((loc ?piece ?X1 ?Y1) (loc empty ?X2 ?Y2) (adj ?piece empty)) -> (movable ?piece ?X1 ?Y1 ?X2 ?Y2)
